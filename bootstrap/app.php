@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Регистрация alias для вашего middleware
+        $middleware->alias([
+            'checkAdmin' => \App\Http\Middleware\CheckAdmin::class,
+            // Можно добавить другие middleware с alias
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

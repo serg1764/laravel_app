@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Models\UserRole;
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class CheckAdmin
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     */
+    public function handle(Request $request, Closure $next): Response
+    {
+        if (auth()->check()) {
+            $userId = auth()->id();
+
+            // Получаем название роли пользователя
+            $roleName = UserRole::getRoleNameByUserId($userId);
+
+            // Проверяем, является ли роль администратора
+            if ($roleName === 'admin') { // Предполагаем, что роль администратора называется 'admin'
+                return $next($request);
+            }
+        }
+
+        // Перенаправление, если пользователь не администратор
+        return redirect('/home'); // Замените '/home' на нужный маршрут
+    }
+}
