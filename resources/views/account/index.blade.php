@@ -8,7 +8,7 @@
                     <div class="card-header">{{ __('Admin Dashboard') }}</div>
 
                     <div class="card-body">
-                        <p>Admin account</p>
+                        <p>Personal account</p>
                     </div>
 
                     <div class="card-body">

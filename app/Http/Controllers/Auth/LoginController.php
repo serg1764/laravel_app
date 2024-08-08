@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Helper;
+use App\Models\UserRole;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -25,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected string $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -36,5 +39,32 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
+    }
+
+    /**
+     * Handle a successful login.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $userId = auth()->id();
+        // Получаем название роли пользователя
+        $roleName = UserRole::getRoleNameByUserId($userId);
+        Helper::logToDatabase(__METHOD__);
+        Helper::logToDatabase($userId);
+        Helper::logToDatabase($roleName);
+        // Check user role and redirect accordingly
+        if ($roleName === 'admin') {
+            return redirect('/admin');
+        }
+
+        if ($roleName === 'user') {
+            return redirect('/account');
+        }
+
+        return redirect('/home');
     }
 }
