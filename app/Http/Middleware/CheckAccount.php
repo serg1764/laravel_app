@@ -2,28 +2,30 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Helper;
 use App\Models\UserRole;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAdmin
+class CheckAccount
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
+        Helper::logToDatabase($roles);
         if (auth()->check()) {
             $userId = auth()->id();
 
             // Получаем название роли пользователя
             $roleName = UserRole::getRoleNameByUserId($userId);
 
-            // Проверяем, является ли роль администратора
-            if ($roleName === 'admin') { // Предполагаем, что роль администратора называется 'admin'
+            // Проверяем, является ли роль user
+            if (in_array($roleName, $roles)) {
                 return $next($request);
             }
         }
