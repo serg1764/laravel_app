@@ -28,9 +28,15 @@ class CheckAccount
             if (in_array($roleName, $roles)) {
                 return $next($request);
             }
+            elseif ($roleName === 'disabled'){
+                return redirect('/disabled');
+            }
+        }
+        else {
+            return redirect('/login');
         }
 
         // Перенаправление, если пользователь не администратор
-        return redirect('/login');
+        return redirect('/');
     }
 }
