@@ -14,7 +14,7 @@ class AccountController extends Controller
         $postsCount = User::count();
         //$postsCount = Post::count();  // Пример получения количества постов
 
-        // Возвращаем представление для администрирования
+        // Возвращаем представление для account
         return view('account.index', compact('usersCount', 'postsCount')); // Здесь предполагается, что у вас есть файл resources/views/account/index.blade.php
     }
 }

@@ -5,16 +5,18 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Personal account') }}</div>
+                    <div class="card-header">{{ __('Disabled account') }}</div>
 
                     <div class="card-body">
-                        <p>Personal account</p>
+                        <p>Disabled account</p>
                     </div>
 
                     <div class="card-body">
-                        <p>Total Users: {{ $usersCount }}</p>
-                        <p>Total Posts: {{ $postsCount }}</p>
-                        <!-- Добавьте другую информацию и функциональность -->
+                        Your account is Disable.
+                    </div>
+
+                    <div class="card-body">
+                        Please contact to support@mysite.com!
                     </div>
                 </div>
             </div>

@@ -26,9 +26,15 @@ class CheckAdmin
             if ($roleName === 'admin') { // Предполагаем, что роль администратора называется 'admin'
                 return $next($request);
             }
+            elseif ($roleName === 'disabled'){
+                return redirect('/disabled');
+            }
+        }
+        else {
+            return redirect('/login');
         }
 
         // Перенаправление, если пользователь не администратор
-        return redirect('/login');
+        return redirect('/account');
     }
 }
