@@ -316,6 +316,7 @@ return [
             'can' => 'manage-blog',
         ],
         [
+            'key' => 'pages',
             'text' => 'pages',
             'url' => 'admin/pages',
             'icon' => 'far fa-fw fa-file',
