@@ -5,6 +5,8 @@ return [
     'main_navigation' => 'ГЛАВНОЕ МЕНЮ',
     'blog' => 'Блог',
     'pages' => 'Страницы',
+    'products' => 'Страницы',
+    'categories' => 'Категории',
     'account_settings' => 'НАСТРОЙКИ ПРОФИЛЯ',
     'profile' => 'Профиль',
     'change_password' => 'Изменить пароль',

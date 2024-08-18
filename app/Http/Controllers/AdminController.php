@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Helper;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,8 +27,6 @@ class AdminController extends Controller
         // Возвращаем представление для администрирования
         //return view('admin.index', compact('usersCount', 'postsCount'));
         // Здесь предполагается, что у вас есть файл resources/views/admin/index.blade.php
-
-        Helper::logToDatabase($this->adminlte);
 
         return view('vendor.adminlte.page', [
             'adminlte' => $this->adminlte,
