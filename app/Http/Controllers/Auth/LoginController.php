@@ -53,9 +53,6 @@ class LoginController extends Controller
         $userId = auth()->id();
         // Получаем название роли пользователя
         $roleName = UserRole::getRoleNameByUserId($userId);
-        Helper::logToDatabase(__METHOD__);
-        Helper::logToDatabase($userId);
-        Helper::logToDatabase($roleName);
         // Check user role and redirect accordingly
         if ($roleName === 'admin') {
             return redirect('/admin');

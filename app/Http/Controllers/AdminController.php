@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Helper;
 use App\Models\User;
-use Illuminate\Http\Request;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 
 class AdminController extends Controller
@@ -14,7 +12,6 @@ class AdminController extends Controller
 
     public function __construct(AdminLte $adminlte)
     {
-        Helper::logToDatabase($this->adminlte);
         $this->adminlte = $adminlte;
     }
     public function index()
@@ -23,6 +20,8 @@ class AdminController extends Controller
         $usersCount = User::count(); // Пример получения количества пользователей
         $postsCount = User::count();
         //$postsCount = Post::count();  // Пример получения количества постов
+
+        Helper::logToDatabase('Route', Helper::showUrl(), 'описание');
 
         // Возвращаем представление для администрирования
         //return view('admin.index', compact('usersCount', 'postsCount'));

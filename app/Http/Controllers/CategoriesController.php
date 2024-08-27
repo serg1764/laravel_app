@@ -21,8 +21,6 @@ class CategoriesController extends Controller
     public function getCategory($id)
     {
         $url = route('admin.getCategory', 1);
-        Helper::logToDatabase($url,'$url');
-        Helper::logToDatabase(Route::has('admin.getCategory'),'$url');
 
         // Получаем категорию по ID
         $category = Category::findOrFail($id);
@@ -30,8 +28,6 @@ class CategoriesController extends Controller
         $usersCount = User::count(); // Пример получения количества пользователей
         $postsCount = User::count();
         $categoryData = $category->toArray();
-
-        Helper::logToDatabase($categoryData, '$category');
 
         return view('admin.index', compact('categoryData', 'usersCount', 'postsCount'));
     }

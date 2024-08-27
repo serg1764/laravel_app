@@ -83,8 +83,6 @@ class RegisterController extends Controller
             ]);
         });
 
-        Helper::logToDatabase([$userId, $userRole->role_id], 'User Info');
-
         return $newUser;
     }
 }

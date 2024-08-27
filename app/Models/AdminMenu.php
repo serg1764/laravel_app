@@ -35,8 +35,6 @@ class AdminMenu extends Model
     public static function buildTree($categories, $parentId = null, $level = 0): array
     {
         $branch = [];
-
-        Helper::logToDatabase($categories, '$categories');
         foreach ($categories as $category) {
             if ($category['parent_id'] === $parentId) {
                 $children = self::buildTree($categories, $category['id'], $level + 1);

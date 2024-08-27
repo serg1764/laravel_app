@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Helper;
 use App\Models\UserRole;
 use Closure;
 use Illuminate\Http\Request;
@@ -16,6 +17,8 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
+        Helper::logToDatabase('Route', Helper::showUrl(), 'описание');
+
         if (auth()->check()) {
             $userId = auth()->id();
 
