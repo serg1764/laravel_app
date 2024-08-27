@@ -62,8 +62,6 @@ class AdminMenuServiceProvider extends ServiceProvider
 
             // Получаем текущее меню
             $menu = config('adminlte.menu');
-            Helper::logToDatabase($menu, '888end');
-            Helper::logToDatabase($event->menu, '888end');
         });
     }
 }

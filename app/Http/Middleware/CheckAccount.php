@@ -17,7 +17,6 @@ class CheckAccount
      */
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        Helper::logToDatabase($roles);
         if (auth()->check()) {
             $userId = auth()->id();
 
