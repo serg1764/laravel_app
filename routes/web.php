@@ -18,4 +18,5 @@ Route::get('/admin', [AdminController::class, 'index'])->middleware('checkAdmin'
 Route::get('/account', [AccountController::class, 'index'])->middleware('checkAccount:user,admin');
 Route::get('/disabled', [DisabledController::class, 'index'])->name('disabled');
 Route::get('/admin/category/{id}', [CategoriesController::class, 'getCategory'])->name('admin.getCategory');
+Route::post('/admin/save-category', [CategoriesController::class, 'saveCategory'])->name('admin.saveCategory');
 

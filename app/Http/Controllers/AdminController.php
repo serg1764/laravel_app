@@ -30,6 +30,7 @@ class AdminController extends Controller
         return view('vendor.adminlte.page', [
             'adminlte' => $this->adminlte,
             'usersCount' => $usersCount,
-            'postsCount' => $postsCount
+            'postsCount' => $postsCount,
+            'type' => 0
         ]);}
 }

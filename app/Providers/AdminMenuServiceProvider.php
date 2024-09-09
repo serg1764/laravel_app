@@ -29,7 +29,7 @@ class AdminMenuServiceProvider extends ServiceProvider
 
             $menuItemsGoods = AdminMenu::buildTree($menuItems);
 
-            $menuItemsСategories = AdminMenu::buildWithoutTree($menuItems);
+            $menuItemsСategories = AdminMenu::buildWithoutTree(categories: $menuItems, addNew: true);
 
             $event->menu->addIn('products',$menuItems);
 

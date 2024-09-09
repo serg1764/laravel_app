@@ -58,7 +58,7 @@ class AdminMenu extends Model
         return $branch;
     }
 
-    public static function buildWithoutTree(array $categories, $parentId = null, $prefix = ''):array
+    public static function buildWithoutTree(array $categories, $parentId = null, $prefix = '', $addNew = false):array
     {
         $result = [];
 
@@ -68,6 +68,15 @@ class AdminMenu extends Model
                 $result[] = $category;
                 $result = array_merge($result, self::buildWithoutTree($categories, $category['id'], $prefix . '-'));
             }
+        }
+
+        if($addNew){
+            $result[] = [
+            'text' => 'Новая категория',
+            'url' => 'http://localhost/admin/category/new',
+            'parent_id',
+            'id'
+            ];
         }
 
         return $result;
