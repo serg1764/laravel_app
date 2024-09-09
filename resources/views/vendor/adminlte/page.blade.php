@@ -34,7 +34,17 @@
 
         {{-- Content Wrapper --}}
         @empty($iFrameEnabled)
-            @include('adminlte::partials.cwrapper.cwrapper-default')
+            {{-- @include('adminlte::partials.cwrapper.cwrapper-default') --}}
+            @if($type === 1)
+                @include('vendor.adminlte.content', ['title' => 'Заголовок1', 'description' => 'Описание1'])
+            @endif
+
+            @if($type === 2)
+                @include('vendor.adminlte.no_content')
+            @endif
+
+            @yield('content')
+
         @else
             @include('adminlte::partials.cwrapper.cwrapper-iframe')
         @endempty
