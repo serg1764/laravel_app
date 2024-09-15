@@ -109,7 +109,9 @@
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Update Category</button>
+                    <button type="submit" class="btn btn-primary">
+                        {{ ($categoryData['id'] !== 'new') ? 'Update Category' : 'Create Category' }}
+                    </button>
                 </div>
             </form>
         </div>
