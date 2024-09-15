@@ -43,6 +43,14 @@
                 @include('vendor.adminlte.no_content')
             @endif
 
+            @if($type === 3)
+                @include('vendor.adminlte.list_items')
+            @endif
+
+            @if($type === 4)
+                @include('vendor.adminlte.item')
+            @endif
+
             @yield('content')
 
         @else

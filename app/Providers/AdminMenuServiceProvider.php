@@ -25,13 +25,14 @@ class AdminMenuServiceProvider extends ServiceProvider
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
             // Получаем все подкатегории для добавления в меню
-            $menuItems = AdminMenu::adminMenuPreparation();
+            $menuItemsItem = AdminMenu::adminMenuPreparation('item');
+            $menuItemsCat = AdminMenu::adminMenuPreparation('cat');
 
-            $menuItemsGoods = AdminMenu::buildTree($menuItems);
+            $menuItemsGoods = AdminMenu::buildTree(categories: $menuItemsItem, addNew: true);
 
-            $menuItemsСategories = AdminMenu::buildWithoutTree(categories: $menuItems, addNew: true);
+            $menuItemsСategories = AdminMenu::buildWithoutTree(categories: $menuItemsCat, addNew: true);
 
-            $event->menu->addIn('products',$menuItems);
+            $event->menu->addIn('products',$menuItemsItem);
 
             $event->menu->addAfter('pages', [
                 'key' => 'products',

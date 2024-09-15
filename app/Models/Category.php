@@ -66,11 +66,9 @@ class Category extends Model
         ];
 
         try {
-
-            if($id !== 'new') {
+            if ($id !== 'new') {
                 $Result['data'] = self::findOrFail($id)->toArray();
-            }
-            else{
+            } else {
                 $Result['data'] = [
                     'id' => 'new',
                     'url' => '',
@@ -83,10 +81,41 @@ class Category extends Model
                     'inactive' => true,
                     'created_at' => '',
                     'updated_at' => '',
-
                 ];
             }
-            // Получение всех категорий
+
+            $list_all_categories = self::getAllCategories();
+            if($list_all_categories['success']){
+                $Result['data']['list_all_categories'] = $list_all_categories['data'];
+            }
+            else{
+                // Выбрасываем исключение, если данные не были успешно получены
+                throw new \Exception('Failed to retrieve categories');
+            }
+
+            $Result['success'] = true;
+
+        } catch (\Exception $e) {
+            $Result['error'] = 'Category not found - ' . $e->getMessage();
+            Helper::logToDatabase('Category', $e->getMessage(), '$Result');
+        }
+
+        return $Result;
+    }
+
+
+    /**
+     * Новый метод для получения всех категорий
+     */
+    public static function getAllCategories(): array
+    {
+        $Result = [
+            'data' => [],
+            'success' => false,
+            'error' => ''
+        ];
+
+        try {
             $allCategories = Category::select('id', 'parent_id', 'name')->get()->toArray();
 
             // Преобразование массива всех категорий в ассоциативный массив по id
@@ -99,28 +128,24 @@ class Category extends Model
             foreach ($allCategories as &$cat) {
                 if ($cat['parent_id']) {
                     $parent = $categoriesById[$cat['parent_id']] ?? null;
-                    if ($parent) {
-                        $cat['parent'] = "prnt: {$parent['id']} - {$parent['name']}";
-                    } else {
-                        $cat['parent'] = "prnt: {$cat['parent_id']} - Unknown";
-                    }
+                    $cat['parent'] = $parent
+                        ? "prnt: {$parent['id']} - {$parent['name']}"
+                        : "prnt: {$cat['parent_id']} - Unknown";
                 } else {
                     $cat['parent'] = "prnt: none";
                 }
             }
 
-            $Result['data']['list_all_categories'] = $allCategories;
+            $Result['data'] = $allCategories;
             $Result['success'] = true;
 
         } catch (\Exception $e) {
-            $Result['error'] = 'Category not found - ' . $e->getMessage();
-            Helper::logToDatabase('Category', $e->getMessage(), '$Result');
+            Helper::logToDatabase('Category', 'Error fetching categories: ' . $e->getMessage(), '$Result');
         }
-
-        Helper::logToDatabase('Category', $Result, '$Result');
 
         return $Result;
     }
+
 
     public static function saveCategory($Data): array
     {
