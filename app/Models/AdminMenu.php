@@ -10,12 +10,15 @@ class AdminMenu extends Model
 {
     use HasFactory;
 
-    public static function adminMenuPreparation(): array
+    public static function adminMenuPreparation($type): array
     {
-        return Category::all()->map(function ($category) {
+        return Category::all()->map(function ($category) use ($type) {
             // Проверяем, существует ли маршрут 'admin.getCategory'
-            if (Route::has('admin.getCategory')) {
+            if (Route::has('admin.getCategory') && $type === 'cat') {
                 $url = route('admin.getCategory', $category->id);
+            }
+            elseif (Route::has('admin.getListOfItems') && $type === 'item') {
+                $url = route('admin.getListOfItems', $category->id);
             } else {
                 $url = '#'; // Или другой запасной вариант
             }
@@ -32,7 +35,7 @@ class AdminMenu extends Model
     }
 
 
-    public static function buildTree($categories, $parentId = null, $level = 0): array
+    public static function buildTree($categories, $parentId = null, $level = 0, $addNew = false): array
     {
         $branch = [];
         foreach ($categories as $category) {
@@ -55,6 +58,15 @@ class AdminMenu extends Model
             }
         }
 
+        if($addNew){
+            $branch[] = [
+                'text' => 'New Product',
+                'url' => route('admin.getProduct', 'new'),
+                'parent_id',
+                'id'
+            ];
+        }
+
         return $branch;
     }
 
@@ -72,8 +84,8 @@ class AdminMenu extends Model
 
         if($addNew){
             $result[] = [
-            'text' => 'Новая категория',
-            'url' => 'http://localhost/admin/category/new',
+            'text' => 'New Category',
+            'url' => route('admin.getCategory', 'new'),
             'parent_id',
             'id'
             ];
