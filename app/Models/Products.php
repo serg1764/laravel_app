@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 class Products extends Model
 {
@@ -24,21 +25,36 @@ class Products extends Model
         ];
 
         try {
-            // Получение всех товаров по category_id
-            $products = self::where('category_id', $category_id)
-                ->get([
-                    'id',
-                    'brand',
-                    'name',
-                    'price',
-                    'quantity',
-                    'image',
-                    'title',
-                    'inactive',
-                    'category_id'
-                ]); // Выбор нужных полей
+            // Уникальный ключ для кеша
+            $cacheKey = "category_items_{$category_id}";
 
-            $Result['data'] = $products->toArray();
+            // Проверка наличия данных в кеше
+            $cachedData = Redis::get($cacheKey);
+
+            if ($cachedData) {
+                // Если данные есть в кеше, декодируем и возвращаем
+                $Result['data'] = json_decode($cachedData, true);
+            } else {
+                // Если данных нет в кеше, получаем из базы
+                // Получение всех товаров по category_id
+                $products = self::where('category_id', $category_id)
+                    ->get([
+                        'id',
+                        'brand',
+                        'name',
+                        'price',
+                        'quantity',
+                        'image',
+                        'title',
+                        'inactive',
+                        'category_id'
+                    ]); // Выбор нужных полей// Сохраняем данные в Redis
+
+                $res = Redis::set('category_items_' . $category_id, json_encode($products->toArray()), 'EX', 3600);
+                Helper::logToDatabase('Redis', $res? 'да':'нет', '$res сделали ключ?');
+
+                $Result['data'] = $products->toArray();
+            }
             $Result['success'] = true;
         } catch (\Exception $e) {
             // Логирование ошибки и возврат ошибки в ответе

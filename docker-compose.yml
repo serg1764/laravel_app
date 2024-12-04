@@ -81,11 +81,23 @@ services:
     ####################################################################################################
     redis:
         image: redis:latest
-        command: redis-server --appendonly yes
+        command: redis-server --appendonly yes #--requirepass your_secure_password
         volumes:
             - .docker/redis/data:/data
         ports:
-            - 6379:6379
+            - 127.0.0.1:6379:6379 # Ограничиваем доступ только для localhost
+        #environment:
+        #    - REDIS_PASSWORD=your_secure_password
+
+    redis-commander:
+        image: rediscommander/redis-commander:latest
+        ports:
+            - 8081:8081
+        environment:
+            - REDIS_HOSTS=local:redis:6379
+            #- REDIS_HOSTS=127.0.0.1:redis:6379
+        depends_on:
+            - redis
 
     # ####################################################################################################
     # # DATABASE (MariaDB)
