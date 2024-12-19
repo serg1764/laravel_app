@@ -63,10 +63,16 @@ return [
             'after_commit' => false,
         ],
 
+        /** Настраивем редис для очередей
+         * Тут ближе к концу у нас все написано
+         * https://chatgpt.com/c/6757e66b-5ec0-800d-8453-1f557a11ea1a
+         *
+         * Ну и свои ENV все-таки прописать для редиса
+         * */
         'redis' => [
             'driver' => 'redis',
-            'connection' => env('REDIS_QUEUE_CONNECTION', 'default'),
-            'queue' => env('REDIS_QUEUE', 'default'),
+            'connection' => env('REDIS_QUEUE_CONNECTION', 'queues'),
+            'queue' => env('REDIS_QUEUE', 'job_redis'),
             'retry_after' => (int) env('REDIS_QUEUE_RETRY_AFTER', 90),
             'block_for' => null,
             'after_commit' => false,

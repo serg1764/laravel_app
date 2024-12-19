@@ -9,6 +9,9 @@ services:
             - 5173:5173
         volumes:
             - .:/var/www:cached
+            - .docker/php/crontab:/etc/cron.d/crontab
+        command: ["bash", "-c", "service cron start && php-fpm"]
+        #/usr/local/bin/php artisan queue:work redis --queue=job_redis_api --sleep=3 --tries=3 >> /var/log/queue_worker.log 2>&1
 
     ####################################################################################################
     # Nginx
