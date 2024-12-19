@@ -44,7 +44,7 @@ RUN set -x \
 RUN echo "This is a simple message - 2"
 
 # Node.js, NPM, Yarn
-RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 RUN npm install npm@latest -g
 RUN npm install yarn -g
@@ -64,5 +64,18 @@ RUN composer global require "laravel/installer"
 WORKDIR /root
 RUN git clone https://github.com/seebi/dircolors-solarized
 
+# Устанавливаем cron
+RUN apt-get update && apt-get install -y cron
+
+# Add cron job
+COPY crontab /etc/cron.d/crontab
+RUN chmod 0644 /etc/cron.d/crontab \
+  && crontab /etc/cron.d/crontab \
+  && touch /var/log/cron.log
+
+# Expose port
 EXPOSE 5173
+
+# Ensure cron runs in the background
+CMD ["sh", "-c", "service cron start && php-fpm"]
 WORKDIR /var/www
