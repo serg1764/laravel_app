@@ -38,9 +38,9 @@ class AdminMenuServiceProvider extends ServiceProvider
             });*/
 
             /** Получаем все подкатегории мз Redis*/
-            $menuItemsItem = json_decode(Redis::get('menuItemsItem'), true);
-            $menuItemsGoods = json_decode(Redis::get('menuItemsGoods'), true);
-            $menuItemsCategories = json_decode(Redis::get('menuItemsCategories'), true);
+            $menuItemsItem = json_decode(Redis::connection('cache')->get('menuItemsItem'), true);
+            $menuItemsGoods = json_decode(Redis::connection('cache')->get('menuItemsGoods'), true);
+            $menuItemsCategories = json_decode(Redis::connection('cache')->get('menuItemsCategories'), true);
 
             if(!isset($menuItemsItem) && !isset($menuItemsGoods) && !isset($menuItemsCategories)) {
                 $resRedis = [];
@@ -53,9 +53,9 @@ class AdminMenuServiceProvider extends ServiceProvider
 
                 /** добавляем данные в редис */
 
-                $resRedis['menuItemsItem'] = Redis::set('menuItemsItem', json_encode($menuItemsItem), 'EX', 3600) ? 'Добавили в Редис' : 'Ошибка Редис';
-                $resRedis['menuItemsGoods'] = Redis::set('menuItemsGoods', json_encode($menuItemsGoods), 'EX', 3600) ? 'Добавили в Редис' : 'Ошибка Редис';
-                $resRedis['menuItemsCategories'] = Redis::set('menuItemsCategories', json_encode($menuItemsCategories), 'EX', 3600) ? 'Добавили в Редис' : 'Ошибка Редис';
+                $resRedis['menuItemsItem'] = Redis::connection('cache')->set('menuItemsItem', json_encode($menuItemsItem), 'EX', 3600) ? 'Добавили в Редис' : 'Ошибка Редис';
+                $resRedis['menuItemsGoods'] = Redis::connection('cache')->set('menuItemsGoods', json_encode($menuItemsGoods), 'EX', 3600) ? 'Добавили в Редис' : 'Ошибка Редис';
+                $resRedis['menuItemsCategories'] = Redis::connection('cache')->set('menuItemsCategories', json_encode($menuItemsCategories), 'EX', 3600) ? 'Добавили в Редис' : 'Ошибка Редис';
                 Helper::logToDatabase('Redis',  $resRedis, '$resRedis');
 
             }
