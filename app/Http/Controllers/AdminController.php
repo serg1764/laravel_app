@@ -17,8 +17,8 @@ class AdminController extends Controller
     public function index()
     {
         // Получаем данные, которые нужно передать в представление
-        $usersCount = User::count(); // Пример получения количества пользователей
-        $postsCount = User::count();
+        $postsCount = $usersCount = User::count(); // Пример получения количества пользователей
+        // $postsCount = User::count(); убрали дубль с помощью панели
         //$postsCount = Post::count();  // Пример получения количества постов
 
         Helper::logToDatabase('Route', Helper::showUrl(), 'описание');
