@@ -33,8 +33,8 @@ class CategoriesController extends Controller
         $categoryData = Category::getCategory($id);
 
         if($categoryData['success']) {
-            $usersCount = User::count(); // Пример получения количества пользователей
-            $postsCount = User::count();
+            $postsCount = $usersCount = User::count(); // Пример получения количества пользователей
+            // $postsCount = User::count(); убрали дулирующий запрос с помощью панели.
 
             //return view('admin.index', compact('categoryData', 'usersCount', 'postsCount'));
             return view('vendor.adminlte.page', [
