@@ -147,3 +147,18 @@ services:
     #         - PGADMIN_DEFAULT_PASSWORD=password
     #     depends_on:
     #         - db
+    #
+    ####################################################################################################
+    # RabbitMQ
+    ####################################################################################################
+    rabbitmq:
+        image: rabbitmq:3-management
+        ports:
+            - 5672:5672  # для соединений с клиентами
+            - 15672:15672  # для доступа к веб-интерфейсу управления
+        environment:
+            - RABBITMQ_DEFAULT_USER=admin
+            - RABBITMQ_DEFAULT_PASS=admin
+        volumes:
+            - .docker/rabbitmq/data:/var/lib/rabbitmq
+            - .docker/rabbitmq/log:/var/log/rabbitmq

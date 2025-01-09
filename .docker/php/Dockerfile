@@ -9,7 +9,7 @@ RUN echo "This is a simple message - 0"
 # mix
 RUN apt-get update \
   && apt-get install -y build-essential zlib1g-dev default-mysql-client curl gnupg procps vim git unzip libzip-dev libpq-dev \
-  && docker-php-ext-install zip pdo_mysql pdo_pgsql pgsql
+  && docker-php-ext-install zip pdo_mysql pdo_pgsql pgsql sockets
 
 # intl
 RUN apt-get install -y libicu-dev \
