@@ -1,5 +1,7 @@
 <?php
 
+/** https://www.rabbitmq.com/tutorials/tutorial-one-php */
+
 return [
 
     /*

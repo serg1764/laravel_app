@@ -105,7 +105,8 @@ class ClearRedis extends Command
                 'inactive',
                 'category_id'
             ]);
-        $res['cat6'] = Redis::set('category_items_' . 4, json_encode($products->toArray()), 'EX', 3600);
+        $res['cat6'] = Redis::set('category_items_' . 6, json_encode($products->toArray()), 'EX', 3600);
+
         $products = Products::where('category_id', 4)
             ->get([
                 'id',
@@ -118,7 +119,7 @@ class ClearRedis extends Command
                 'inactive',
                 'category_id'
             ]);
-        $res['cat4'] = Redis::set('category_items_' . 6, json_encode($products->toArray()), 'EX', 3600);
+        $res['cat4'] = Redis::set('category_items_' . 4, json_encode($products->toArray()), 'EX', 3600);
         foreach ($res as $key => $item) {
             $this->info("Key '{$key}' '{$item}'.");
         }

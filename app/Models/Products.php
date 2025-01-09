@@ -30,8 +30,10 @@ class Products extends Model
 
             // Проверка наличия данных в кеше
             $cachedData = Redis::get($cacheKey);
+            Helper::logToDatabase('Product', $cacheKey, '$cacheKey');
+            Helper::logToDatabase('Product', $cachedData, '$cachedData');
 
-            if ($cachedData) {
+            if ($cachedData && strlen($cachedData) > 2) {
                 // Если данные есть в кеше, декодируем и возвращаем
                 $Result['data'] = json_decode($cachedData, true);
             } else {
