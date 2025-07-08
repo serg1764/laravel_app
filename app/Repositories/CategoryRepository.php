@@ -12,7 +12,7 @@ class CategoryRepository implements CategoryRepositoryInterface
         return Category::saveCategory($data);
     }
 
-    public function get(int $id): array
+    public function get(int|string $id): array
     {
         return Category::getCategory($id);
     }

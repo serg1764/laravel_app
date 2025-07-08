@@ -25,7 +25,7 @@ class CategoryService
         return $response;
     }
 
-    public function getCategory(int $id): array
+    public function getCategory(int|string $id): array
     {
         return $this->repo->get($id);
     }

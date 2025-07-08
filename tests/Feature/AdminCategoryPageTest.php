@@ -51,4 +51,53 @@ class AdminCategoryPageTest extends TestCase
         // Предположим, у него роль не admin — тогда он будет редиректнут на /account
         $response->assertRedirect('/account');
     }
+
+    public function test_admin_can_create_new_category(): void
+    {
+        // Подключаем админа из базы
+        $admin = User::where('name', 'admin')->firstOrFail();
+
+        // Авторизация
+        $this->actingAs($admin);
+
+        // Данные для создания новой категории
+        $input = [
+            'id' => 'new',
+            'parent_id' => 1,
+            'title' => 'Тестовая категория',
+            'name' => 'test_category',
+            'description' => 'Описание новой категории',
+            'url' => 'test-category',
+            'content' => '<p>Контент</p>',
+            'imgs' => 'img_test.jpg',
+            'inactive' => false,
+        ];
+
+        $input['name'] = ucfirst($input['name']);
+
+        // Отправка запроса
+        $response = $this->post('/admin/save-category', $input);
+
+        // Проверка успешного ответа и структуры JSON
+        $response->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => [
+                    'name' => $input['name'],
+                    'url' => $input['url'],
+                ]
+            ]);
+
+        // Проверка, что категория записалась в БД
+        $this->assertDatabaseHas('categories', [
+            'name' => $input['name'],
+            'title' => $input['title'],
+            'url' => $input['url'],
+            'parent_id' => $input['parent_id'],
+            'description' => $input['description'],
+            'content' => $input['content'],
+            'imgs' => $input['imgs'],
+            'inactive' => $input['inactive'],
+        ]);
+    }
 }
