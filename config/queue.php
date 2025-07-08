@@ -80,6 +80,39 @@ return [
             'after_commit' => false,
         ],
 
+        'rabbitmq' => [
+            'driver' => 'rabbitmq',
+            'factory_class' => \Enqueue\AmqpLib\AmqpConnectionFactory::class,
+
+            'host' => env('RABBITMQ_HOST', '127.0.0.1'),
+            'port' => env('RABBITMQ_PORT', 5672),
+            'vhost' => env('RABBITMQ_VHOST', '/'),
+            'login' => env('RABBITMQ_USER', 'guest'),
+            'password' => env('RABBITMQ_PASSWORD', 'guest'),
+
+            'queue' => env('RABBITMQ_QUEUE', 'default'),
+
+            'options' => [
+                'exchange' => [
+                    'name' => env('RABBITMQ_EXCHANGE_NAME', 'input_headers_exchange_name1'),
+                    'type' => 'headers', // ← здесь исправить
+                    'declare' => true,
+                ],
+
+                'queue' => [
+                    'declare' => true,
+                    'bind' => true,
+                ],
+            ],
+
+            'ssl_params' => [
+                'ssl_on' => false,
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+                'allow_self_signed' => false,
+            ],
+        ],
+
     ],
 
     /*

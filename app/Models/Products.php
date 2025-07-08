@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Observers\ProductsObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Redis;
 
+#[ObservedBy([ProductsObserver::class])]
 class Products extends Model
 {
     // Указание имени таблицы, если оно отличается от соглашения

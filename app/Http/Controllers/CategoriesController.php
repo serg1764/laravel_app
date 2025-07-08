@@ -2,25 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\Helper;
 use App\Models\User;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 
 class CategoriesController extends Controller
 {
-    protected $adminlte;
+    protected AdminLte $adminlte;
+    protected CategoryService $categoryService;
 
-    public function __construct(AdminLte $adminlte)
+    public function __construct(AdminLte $adminlte, CategoryService $categoryService)
     {
         $this->adminlte = $adminlte;
+        $this->categoryService = $categoryService;
     }
 
     public function index()
     {
         // Получаем все категории
-        $categories = Category::all();
+        $categories = $this->categoryService->getAll();
 
         return view('categories.index', compact('categories'));
     }
@@ -30,7 +31,7 @@ class CategoriesController extends Controller
         $url = route('admin.getCategory', 1);
 
         // Получаем категорию по ID
-        $categoryData = Category::getCategory($id);
+        $categoryData = $this->categoryService->getCategory($id);
 
         if($categoryData['success']) {
             $postsCount = $usersCount = User::count(); // Пример получения количества пользователей
@@ -58,7 +59,7 @@ class CategoriesController extends Controller
     {
         $Data = $request->all();
         // Сохраняем данные категории
-        $categoryData = Category::saveCategory($Data);
+        $categoryData = $this->categoryService->saveCategory($Data);
 
         return $categoryData;
     }

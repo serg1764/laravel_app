@@ -30,6 +30,7 @@ class ClearRedis extends Command
      */
     public function handle()
     {
+        print_r('[' . date('Y-m-d H:i:s') . '] OK - Clear Redis started' . PHP_EOL);
         // Укажите нужное подключение
         $redis = Redis::connection();
 
@@ -123,6 +124,9 @@ class ClearRedis extends Command
         foreach ($res as $key => $item) {
             $this->info("Key '{$key}' '{$item}'.");
         }
+
+        print_r('[' . date('Y-m-d H:i:s') . '] OK - Clear Redis ended' . PHP_EOL);
+        print_r('[' . date('Y-m-d H:i:s') . '] OK - Кеш очистен - завершение 888 !!!' . PHP_EOL);
 
         return CommandAlias::SUCCESS;
     }

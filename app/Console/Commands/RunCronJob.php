@@ -57,7 +57,7 @@ class RunCronJob extends Command
             Helper::logToDatabase('API', $result, $result['error']);
         }
 
-        print_r ("OK - " . $result['success'] . PHP_EOL);
+        print_r('[' . date('Y-m-d H:i:s') . '] OK - ' . $result['success'] . PHP_EOL);
         //return response()->json($result, 200);
         //return 1;
 

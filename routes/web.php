@@ -16,27 +16,28 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])
     ->name('home');
 
-Route::get('/admin', [AdminController::class, 'index'])
-    ->middleware('checkAdmin');
-
 Route::get('/account', [AccountController::class, 'index'])
     ->middleware('checkAccount:user,admin');
 
 Route::get('/disabled', [DisabledController::class, 'index'])
     ->name('disabled');
 
-Route::get('/admin/category/{id}', [CategoriesController::class, 'getCategory'])
-    ->name('admin.getCategory');
+Route::middleware('checkAdmin')->prefix('admin')->group(function () {
+    Route::get('/', [AdminController::class, 'index']);
 
-Route::post('/admin/save-category', [CategoriesController::class, 'saveCategory'])
-    ->name('admin.saveCategory');
+    Route::get('/category/{id}', [CategoriesController::class, 'getCategory'])
+        ->name('admin.getCategory');
 
-Route::get('/admin/list-of-items/{id}', [ProductsController::class, 'index'])
-    ->name('admin.getListOfItems');
+    Route::post('/save-category', [CategoriesController::class, 'saveCategory'])
+        ->name('admin.saveCategory');
 
-Route::get('/admin/product/{id}', [ProductsController::class, 'getProduct'])
-    ->name('admin.getProduct');
+    Route::get('/list-of-items/{id}', [ProductsController::class, 'index'])
+        ->name('admin.getListOfItems');
 
-Route::post('/admin/save-product',[ProductsController::class, 'saveProduct'])
-    ->name('admin.saveProduct');
+    Route::get('/product/{id}', [ProductsController::class, 'getProduct'])
+        ->name('admin.getProduct');
+
+    Route::post('/save-product', [ProductsController::class, 'saveProduct'])
+        ->name('admin.saveProduct');
+});
 
