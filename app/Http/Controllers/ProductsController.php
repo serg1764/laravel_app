@@ -6,6 +6,7 @@ use App\Models\Helper;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use JeroenNoten\LaravelAdminLte\AdminLte;
+use App\Services\ProductService;
 
 class ProductsController extends Controller
 {
@@ -45,5 +46,13 @@ class ProductsController extends Controller
         $productData = Products::saveProduct($Data);
 
         return $productData;
+    }
+
+    public function showToSite(int $id, Request $request, ProductService $productService)
+    {
+        $discount = $request->query('discount'); // id или name
+        $product = $productService->getProductWithDiscount($id, $discount);
+
+        return response()->json($product);
     }
 }

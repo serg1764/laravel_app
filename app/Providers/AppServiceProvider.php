@@ -7,6 +7,8 @@ use App\Repositories\CategoryRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Services\CategoryService;
 use App\Services\ProductService;
+use App\Repositories\DiscountRepositoryInterface;
+use App\Repositories\DiscountRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(DiscountRepositoryInterface::class, DiscountRepository::class);
 
         $this->app->singleton(CategoryService::class);
         $this->app->singleton(ProductService::class);

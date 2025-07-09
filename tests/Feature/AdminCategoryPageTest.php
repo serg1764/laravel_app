@@ -14,6 +14,13 @@ class AdminCategoryPageTest extends TestCase
     /** запускаем командой php artisan test tests/Feature/AdminCategoryPageTest.php*/
     public function test_admin_category_page_returns_success_for_admin(): void
     {
+        // 👂 Логируем SQL-запросы
+        /*\DB::listen(function ($query) {
+            dump('SQL:', $query->sql);
+            //dump('Bindings:', $query->bindings);
+            dump('Time:', $query->time . ' ms');
+        });*/
+
         // Получаем пользователя с именем admin
         $user = User::where('name', 'admin')->firstOrFail();
 
@@ -54,6 +61,13 @@ class AdminCategoryPageTest extends TestCase
 
     public function test_admin_can_create_new_category(): void
     {
+        // 👂 Логируем SQL-запросы
+        /*\DB::listen(function ($query) {
+            dump('SQL:', $query->sql);
+            dump('Bindings:', $query->bindings);
+            dump('Time:', $query->time . ' ms');
+        });*/
+
         // Подключаем админа из базы
         $admin = User::where('name', 'admin')->firstOrFail();
 
@@ -78,6 +92,11 @@ class AdminCategoryPageTest extends TestCase
         // Отправка запроса
         $response = $this->post('/admin/save-category', $input);
 
+        // 🔍 Отладочные дампы — можно временно раскомментировать:
+        //$response->dump();          // покажет JSON-ответ
+        //$response->dumpHeaders();   // покажет заголовки
+        //$response->dumpSession();   // покажет содержимое сессии
+
         // Проверка успешного ответа и структуры JSON
         $response->assertStatus(200)
             ->assertJson([
@@ -85,6 +104,8 @@ class AdminCategoryPageTest extends TestCase
                 'data' => [
                     'name' => $input['name'],
                     'url' => $input['url'],
+                    'imgs' => $input['imgs'],
+                    'inactive' => $input['inactive'],
                 ]
             ]);
 

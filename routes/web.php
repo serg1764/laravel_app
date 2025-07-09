@@ -41,3 +41,5 @@ Route::middleware('checkAdmin')->prefix('admin')->group(function () {
         ->name('admin.saveProduct');
 });
 
+Route::get('/product/{id}', [ProductsController::class, 'showToSite']);
+
