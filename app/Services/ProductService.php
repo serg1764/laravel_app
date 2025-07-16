@@ -2,23 +2,21 @@
 
 namespace App\Services;
 
-use App\Models\Products;
+use App\Models\Helper;
 use App\Repositories\DiscountRepositoryInterface;
+use App\Repositories\ProductRepositoryInterface;
+use Illuminate\Http\Request;
 
 class ProductService
 {
-    protected Products $products;
-    protected DiscountRepositoryInterface $discountRepo;
-
-    public function __construct(Products $products, DiscountRepositoryInterface $discountRepo)
-    {
-        $this->products = $products;
-        $this->discountRepo = $discountRepo;
-    }
+    public function __construct(
+        private ProductRepositoryInterface $productRepository,
+        private DiscountRepositoryInterface $discountRepo
+    ) {}
 
     public function getProductWithDiscount(string|int $product_id, string|int|null $discount_id_or_name = null): array
     {
-        $result = $this->products->getProduct($product_id);
+        $result = $this->productRepository->getProduct($product_id);
 
         if (!$result['success'] || !$discount_id_or_name) {
             return $result;
@@ -49,5 +47,25 @@ class ProductService
         $result['data']['applied_discount'] = $discount->only(['id', 'name', 'type', 'value']);
 
         return $result;
+    }
+
+    public function getListOfItems(int $id): array
+    {
+        $itemsData = $this->productRepository->getListOfItems($id);
+        Helper::logToDatabase('ProductService', $itemsData['data'], 'getListOfItems');
+        return $itemsData;
+    }
+
+    public function getSingleProduct(int $id): array
+    {
+        $itemData = $this->productRepository->getProduct($id);
+        Helper::logToDatabase('ProductService', $itemData, 'getSingleProduct');
+        return $itemData;
+    }
+
+    public function saveProduct(Request $request): array
+    {
+        $data = $request->all();
+        return $this->productRepository->saveProduct($data);
     }
 }

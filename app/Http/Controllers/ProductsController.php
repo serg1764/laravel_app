@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Helper;
-use App\Models\Products;
 use Illuminate\Http\Request;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 use App\Services\ProductService;
 
 class ProductsController extends Controller
 {
-    protected $adminlte;
+    protected AdminLte $adminlte;
+    protected ProductService $productService;
 
-    public function __construct(AdminLte $adminlte)
+    public function __construct(AdminLte $adminlte, ProductService $productService)
     {
         $this->adminlte = $adminlte;
+        $this->productService = $productService;
     }
+
     public function index($id)
     {
-        $itemsData = Products::getListOfItems($id);
-
-        Helper::logToDatabase('ProductController', $itemsData['data'], '$itemsData');
+        $itemsData = $this->productService->getListOfItems($id);
 
         return view('vendor.adminlte.page', [
             'adminlte' => $this->adminlte,
@@ -28,10 +27,11 @@ class ProductsController extends Controller
             'type' => 3
         ]);
     }
+
     public function getProduct($id)
     {
-        $itemsData = Products::getProduct($id);
-        Helper::logToDatabase('ProductController', $itemsData, '$itemsData');
+        $itemsData = $this->productService->getSingleProduct($id);
+
         return view('vendor.adminlte.page', [
             'adminlte' => $this->adminlte,
             'phoneData' => $itemsData['data'],
@@ -41,17 +41,13 @@ class ProductsController extends Controller
 
     public function saveProduct(Request $request)
     {
-        $Data = $request->all();
-        // Сохраняем данные продукта
-        $productData = Products::saveProduct($Data);
-
-        return $productData;
+        return $this->productService->saveProduct($request);
     }
 
-    public function showToSite(int $id, Request $request, ProductService $productService)
+    public function showToSite(int $id, Request $request)
     {
         $discount = $request->query('discount'); // id или name
-        $product = $productService->getProductWithDiscount($id, $discount);
+        $product = $this->productService->getProductWithDiscount($id, $discount);
 
         return response()->json($product);
     }
