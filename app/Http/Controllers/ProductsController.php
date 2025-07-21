@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 use App\Services\ProductService;
@@ -50,5 +51,13 @@ class ProductsController extends Controller
         $product = $this->productService->getProductWithDiscount($id, $discount);
 
         return response()->json($product);
+    }
+
+    public function filteredList(Request $request): JsonResponse
+    {
+        $filters = $request->only(['category_id', 'min_price', 'max_price']);
+        $products = $this->productService->getFilteredProducts($filters);
+
+        return response()->json($products);
     }
 }

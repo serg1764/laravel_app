@@ -43,3 +43,5 @@ Route::middleware('checkAdmin')->prefix('admin')->group(function () {
 
 Route::get('/product/{id}', [ProductsController::class, 'showToSite']);
 
+Route::get('/products/filtered', [ProductsController::class, 'filteredList']);
+

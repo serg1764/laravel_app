@@ -143,4 +143,11 @@ class CategoryServiceTest extends TestCase
         $this->assertInstanceOf(Collection::class, $result);
         $this->assertCount(2, $result);
     }*/
+
+    /** Делаем тест
+     * для всех ответвлений логик
+     * http://localhost/products/filtered?category_id=5&min_price=0&max_price=10000
+     * http://localhost/products/filtered?page=2&category_id=5&min_price=0&max_price=6005
+     *
+     * */
 }

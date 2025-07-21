@@ -6,6 +6,7 @@ use App\Models\Helper;
 use App\Repositories\DiscountRepositoryInterface;
 use App\Repositories\ProductRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
@@ -67,5 +68,10 @@ class ProductService
     {
         $data = $request->all();
         return $this->productRepository->saveProduct($data);
+    }
+
+    public function getFilteredProducts(array $filters): LengthAwarePaginator
+    {
+        return $this->productRepository->getFilteredList($filters);
     }
 }
